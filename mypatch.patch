@@ -1,0 +1,58 @@
+diff --git a/packages/react-native-web/dist/exports/StyleSheet/index.js b/packages/react-native-web/dist/exports/StyleSheet/index.js
+index 76b92583..5ec2bd9d 100644
+--- a/packages/react-native-web/dist/exports/StyleSheet/index.js
++++ b/packages/react-native-web/dist/exports/StyleSheet/index.js
+@@ -159,7 +159,8 @@ function flatten() {
+ function getSheet() {
+   return {
+     id: sheet.id,
+-    textContent: sheet.getTextContent()
++    textContent: sheet.getTextContent(),
++    sheet: sheet
+   };
+ }
+ /**
+diff --git a/packages/react-native-web/dist/exports/TouchableOpacity/index.js b/packages/react-native-web/dist/exports/TouchableOpacity/index.js
+index 7000a937..bbc6ec41 100644
+--- a/packages/react-native-web/dist/exports/TouchableOpacity/index.js
++++ b/packages/react-native-web/dist/exports/TouchableOpacity/index.js
+@@ -41,7 +41,7 @@ function TouchableOpacity(props, forwardedRef) {
+   var hostRef = useRef(null);
+   var setRef = useMergeRefs(forwardedRef, hostRef);
+ 
+-  var _useState = useState('0s'),
++  var _useState = useState('0.15s'),
+       duration = _useState[0],
+       setDuration = _useState[1];
+ 
+@@ -51,7 +51,7 @@ function TouchableOpacity(props, forwardedRef) {
+ 
+   var setOpacityTo = useCallback((value, duration) => {
+     setOpacityOverride(value);
+-    setDuration(duration ? duration / 1000 + "s" : '0s');
++    setDuration(duration ? duration / 1000 + "s" : '0.15s');
+   }, [setOpacityOverride, setDuration]);
+   var setOpacityActive = useCallback(duration => {
+     setOpacityTo(activeOpacity !== null && activeOpacity !== void 0 ? activeOpacity : 0.2, duration);
+diff --git a/packages/react-native-web/dist/exports/render/index.js b/packages/react-native-web/dist/exports/render/index.js
+index 85f6fadd..68f0b56d 100644
+--- a/packages/react-native-web/dist/exports/render/index.js
++++ b/packages/react-native-web/dist/exports/render/index.js
+@@ -6,13 +6,13 @@
+  *
+  * 
+  */
+-import { hydrate as domHydrate, render as domRender } from 'react-dom';
++import * as ReactDOM from 'react-dom/client';
+ import { createSheet } from '../StyleSheet/dom';
+ export function hydrate(element, root, callback) {
+   createSheet(root);
+-  return domHydrate(element, root, callback);
++  ReactDOM.createRoot(root, { hydrate: true }).render(element, callback);
+ }
+ export default function render(element, root, callback) {
+   createSheet(root);
+-  return domRender(element, root, callback);
++  ReactDOM.createRoot(root).render(element, callback);
+ }
+\ No newline at end of file

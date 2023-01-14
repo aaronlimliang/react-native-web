@@ -159,7 +159,8 @@ function flatten() {
 function getSheet() {
   return {
     id: sheet.id,
-    textContent: sheet.getTextContent()
+    textContent: sheet.getTextContent(),
+    sheet: sheet
   };
 }
 /**

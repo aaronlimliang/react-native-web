@@ -41,7 +41,7 @@ function TouchableOpacity(props, forwardedRef) {
   var hostRef = useRef(null);
   var setRef = useMergeRefs(forwardedRef, hostRef);
 
-  var _useState = useState('0s'),
+  var _useState = useState('0.15s'),
       duration = _useState[0],
       setDuration = _useState[1];
 
@@ -51,7 +51,7 @@ function TouchableOpacity(props, forwardedRef) {
 
   var setOpacityTo = useCallback((value, duration) => {
     setOpacityOverride(value);
-    setDuration(duration ? duration / 1000 + "s" : '0s');
+    setDuration(duration ? duration / 1000 + "s" : '0.15s');
   }, [setOpacityOverride, setDuration]);
   var setOpacityActive = useCallback(duration => {
     setOpacityTo(activeOpacity !== null && activeOpacity !== void 0 ? activeOpacity : 0.2, duration);
