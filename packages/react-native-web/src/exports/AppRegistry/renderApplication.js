@@ -45,6 +45,10 @@ export function getApplication(
   initialProps: Object,
   WrapperComponent?: ?ComponentType<*>
 ): {| element: Node, getStyleElement: (Object) => Node |} {
+
+  // Reset all styles generated after the last getApplication call
+  StyleSheet.resetSheet();
+
   const element = (
     <AppContainer WrapperComponent={WrapperComponent} rootTag={{}}>
       <RootComponent {...initialProps} />

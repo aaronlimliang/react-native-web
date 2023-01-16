@@ -12,7 +12,8 @@ type Selectors = { [key: string]: boolean };
 
 export type OrderedCSSStyleSheet = {|
   getTextContent: () => string,
-  insert: (cssText: string, groupValue: number) => void
+  insert: (cssText: string, groupValue: number) => void,
+  duplicate () => OrderedCSSStyleSheet,
 |};
 
 const slice = Array.prototype.slice;
@@ -33,10 +34,11 @@ const slice = Array.prototype.slice;
  * https://gist.github.com/necolas/aa0c37846ad6bd3b05b727b959e82674
  */
 export default function createOrderedCSSStyleSheet(
-  sheet: ?CSSStyleSheet
+  sheet: ?CSSStyleSheet,
+  initial
 ): OrderedCSSStyleSheet {
-  const groups: Groups = {};
-  const selectors: Selectors = {};
+  const groups: Groups = initial?.groups || {};
+  const selectors: Selectors = initial?.selectors || {};
 
   /**
    * Hydrate approximate record from any existing rules in the sheet.
@@ -140,6 +142,16 @@ export default function createOrderedCSSStyleSheet(
           }
         }
       }
+    },
+
+    duplicate() {
+      const copyGroups = {};
+
+      Object.entries(groups).forEach(([groupKey, group]) => {
+        copyGroups[groupKey] = { ...group, rules: [...group.rules] };
+      });
+
+      return createOrderedCSSStyleSheet(sheet, { groups: copyGroups, selectors: { ...selectors } });
     }
   };
 

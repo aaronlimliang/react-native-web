@@ -16,7 +16,9 @@ import { validate } from './validate';
 import canUseDOM from '../../modules/canUseDom';
 
 const staticStyleMap: WeakMap<Object, Object> = new WeakMap();
-const sheet = createSheet();
+
+const initialSheet = createSheet();
+let sheet = initialSheet;
 
 function customStyleq(styles, isRTL) {
   return styleq.factory({
@@ -138,6 +140,10 @@ function getSheet(): { id: string, textContent: string } {
   };
 }
 
+function resetSheet() {
+  sheet = initialSheet.duplicate();
+}
+
 /**
  * resolve
  */
@@ -159,6 +165,7 @@ StyleSheet.create = create;
 StyleSheet.compose = compose;
 StyleSheet.flatten = flatten;
 StyleSheet.getSheet = getSheet;
+StyleSheet.resetSheet = resetSheet;
 // `hairlineWidth` is not implemented using screen density as browsers may
 // round sub-pixel values down to `0`, causing the line not to be rendered.
 StyleSheet.hairlineWidth = 1;

@@ -14,12 +14,11 @@ import createOrderedCSSStyleSheet from './createOrderedCSSStyleSheet';
 
 type Sheet = {
   ...OrderedCSSStyleSheet,
+  duplicate: () => Sheet,
   id: string
 };
 
 const defaultId = 'react-native-stylesheet';
-const roots = new WeakMap<Node, number>();
-const sheets = [];
 
 const initialRules = [
   // minimal top-level reset
@@ -32,8 +31,11 @@ const initialRules = [
 
 export function createSheet(
   root?: HTMLElement,
-  id?: string = defaultId
+  id?: string = defaultId,
+  initialSheets
 ): Sheet {
+  const roots = new WeakMap<Node, number>();
+  const sheets = initialSheets || [];
   let sheet;
 
   if (canUseDOM) {
@@ -85,6 +87,9 @@ export function createSheet(
       sheets.forEach((s) => {
         s.insert(cssText, groupValue);
       });
+    },
+    duplicate() {
+      return createSheet(root, id, sheets.map(sheet => sheet.duplicate()));
     }
   };
 }
