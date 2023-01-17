@@ -136,7 +136,8 @@ function flatten(...styles: any): { [key: string]: any } {
 function getSheet(): { id: string, textContent: string } {
   return {
     id: sheet.id,
-    textContent: sheet.getTextContent()
+    textContent: sheet.getTextContent(),
+    sheet: sheet
   };
 }
 
