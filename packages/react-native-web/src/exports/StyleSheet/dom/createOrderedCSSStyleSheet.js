@@ -13,7 +13,7 @@ type Selectors = { [key: string]: boolean };
 export type OrderedCSSStyleSheet = {|
   getTextContent: () => string,
   insert: (cssText: string, groupValue: number) => void,
-  duplicate () => OrderedCSSStyleSheet,
+  duplicate: () => OrderedCSSStyleSheet
 |};
 
 const slice = Array.prototype.slice;
@@ -151,7 +151,10 @@ export default function createOrderedCSSStyleSheet(
         copyGroups[groupKey] = { ...group, rules: [...group.rules] };
       });
 
-      return createOrderedCSSStyleSheet(sheet, { groups: copyGroups, selectors: { ...selectors } });
+      return createOrderedCSSStyleSheet(sheet, {
+        groups: copyGroups,
+        selectors: { ...selectors }
+      });
     }
   };
 
