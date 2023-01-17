@@ -89,7 +89,11 @@ export function createSheet(
       });
     },
     duplicate() {
-      return createSheet(root, id, sheets.map(sheet => sheet.duplicate()));
+      return createSheet(
+        root,
+        id,
+        sheets.map((sheet) => sheet.duplicate())
+      );
     }
   };
 }
